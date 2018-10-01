@@ -37,7 +37,7 @@ namespace DCIMRecomp
 
             if (string.IsNullOrEmpty(txtDest.Text))
                 txtDest.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            System.Net.Dns.BeginGetHostAddresses("dcimrecompversion.m4f.eu", CheckVersion, null);
+            //System.Net.Dns.BeginGetHostAddresses("dcimrecompversion.m4f.eu", CheckVersion, null);
         }
 
         delegate void AddVersion();

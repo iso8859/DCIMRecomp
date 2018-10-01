@@ -295,6 +295,7 @@
             this.btnWebSite.TabIndex = 5;
             this.btnWebSite.TabStop = true;
             this.btnWebSite.Text = "http://DCIMPRecomp.m4f.eu";
+            this.btnWebSite.Visible = false;
             this.btnWebSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.btnWebSite_LinkClicked);
             // 
             // process2
@@ -375,6 +376,7 @@
             this.linkLabel1.TabIndex = 23;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Faire un don (paypal)";
+            this.linkLabel1.Visible = false;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // label7
