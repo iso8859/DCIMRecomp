@@ -176,6 +176,7 @@ namespace DCIMRecomp
                 lblFinished.Visible = false;
                 string[] tmp = System.IO.Directory.GetFiles(Properties.Settings.Default.Src, "*.*", btnSubDir.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
                 long totalSize = 0;
+                string name = string.Format(Properties.Settings.Default.Name, DateTime.Now);
 
                 foreach (string file in tmp)
                 {
@@ -192,11 +193,23 @@ namespace DCIMRecomp
                                 totalSize += size;
                             }
                         }
-                        if (btnMovies.Checked && (ext == ".MOV" || ext == ".AVI" || ext == ".MPG" || ext == ".WMV" || ext == ".MP4" || ext == ".3GP" || ext == ".MTS"))
+                        else if (btnMovies.Checked && (ext == ".MOV" || ext == ".AVI" || ext == ".MPG" || ext == ".WMV" || ext == ".MP4" || ext == ".3GP" || ext == ".MTS"))
                         {
                             long size = GetFileSize(file);
                             srcMovies.Add(file);
                             totalSize += size;
+                        }
+                        else
+                        {
+                            string path = System.IO.Path.GetDirectoryName(file);
+                            string deltaPath = path.Substring(Properties.Settings.Default.Src.Length);
+                            string finalName = System.IO.Path.GetFileNameWithoutExtension(file) + ".rc" + System.IO.Path.GetExtension(file);
+                            string dest = Properties.Settings.Default.Dest + "\\" + name + "\\" + deltaPath + "\\" + finalName;
+                            uData.CDInterface.CreateDirectoryForFile(dest);
+                            if (Properties.Settings.Default.EraseSource)
+                                System.IO.File.Move(file, dest);
+                            else
+                                System.IO.File.Copy(file, dest, true);
                         }
                     }
                 }
@@ -257,7 +270,11 @@ namespace DCIMRecomp
                     try
                     {
                         using (ExifLib.ExifReader reader = new ExifLib.ExifReader(image))
-                            reader.GetTagValue<DateTime>(ExifLib.ExifTags.DateTimeDigitized, out date);
+                        {
+                            DateTime dateTmp;
+                            if (reader.GetTagValue<DateTime>(ExifLib.ExifTags.DateTimeDigitized, out dateTmp))
+                                date = dateTmp;
+                        }
                     }
                     catch { }
                     if (btnReorganise.Checked)
