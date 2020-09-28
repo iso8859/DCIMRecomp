@@ -37,7 +37,7 @@ namespace DCIMRecomp
 
             if (string.IsNullOrEmpty(txtDest.Text))
                 txtDest.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            System.Net.Dns.BeginGetHostAddresses("dcimrecompversion.m4f.eu", CheckVersion, null);
+            // System.Net.Dns.BeginGetHostAddresses("dcimrecompversion.m4f.eu", CheckVersion, null);
         }
 
         delegate void AddVersion();
@@ -257,7 +257,12 @@ namespace DCIMRecomp
                     try
                     {
                         using (ExifLib.ExifReader reader = new ExifLib.ExifReader(image))
-                            reader.GetTagValue<DateTime>(ExifLib.ExifTags.DateTimeDigitized, out date);
+                        {
+                            DateTime date2;
+                            reader.GetTagValue<DateTime>(ExifLib.ExifTags.DateTimeDigitized, out date2);
+                            if (date2 != DateTime.MinValue)
+                                date = date2;
+                        }
                     }
                     catch { }
                     if (btnReorganise.Checked)
